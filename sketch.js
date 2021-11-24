@@ -10,6 +10,9 @@ let hands;
 let indexX;
 let indexY;
 
+//statemachine
+let generalState = 0;
+
 //cheks runs when a handpose has loaded
 function modelReady() {
   console.log("hand pose loaded");
@@ -31,11 +34,11 @@ function getIndexFingerCords(hand) {
 function createFish(number) {
   let allOtherFish = [];
   for (let fishIndex = 0; fishIndex < number; fishIndex++) {
-    const x = random(0, width)+5;
-    const y = random(0, height)+5;
+    const x = random(0, width) + 5;
+    const y = random(0, height) + 5;
     const size = random(10, 50);
     const otherFish = new Fish(x, y, size);
-    allOtherFish[fishIndex]= otherFish;    
+    allOtherFish[fishIndex] = otherFish;
   }
   return allOtherFish;
 }
@@ -51,40 +54,49 @@ function setup() {
 }
 
 function draw() {
-  push();
-  translate(width, 0);
-  scale(-1, 1);
-  background(220);
-  if (video) {
-    tint(255, 127);
-    image(video, 0, 0);
+  if (generalState == 0) {
+    background(43, 190, 236);
+    textAlign(CENTER);
+    textSize(50);
+    text("Hello!", width / 2, height / 2 - 100);
+    textSize(20);
+    text("Please type your name in the box below:", width / 2, height / 2 - 70);
   }
 
-  for (let key in allOtherFish) {
-    let fish = allOtherFish[key];
-    if (!fish.isDead){
-      fish.display();
+  if (generalState == 1) {
+    push();
+    translate(width, 0);
+    scale(-1, 1);
+    background(220);
+    if (video) {
+      tint(255, 127);
+      image(video, 0, 0);
     }
-  }
 
-  if (hands && hands.length > 0) {
-    let hand = hands[0];
-    let indexFinger = getIndexFingerCords(hand);
-    indexX = indexFinger[0];
-    indexY = indexFinger[1];
-
-    playerFish.move(indexX, indexY);
-    playerFish.display(); 
-    
     for (let key in allOtherFish) {
       let fish = allOtherFish[key];
-      console.log(playerFish.fishX, playerFish.fishY);
-      if (playerFish.collision(fish)){
-        console.log("AUCH! collision");
+      fish.display();
+    }
+
+    if (hands && hands.length > 0) {
+      let hand = hands[0];
+      let indexFinger = getIndexFingerCords(hand);
+      indexX = indexFinger[0];
+      indexY = indexFinger[1];
+
+      playerFish.move(indexX, indexY);
+      playerFish.display();
+
+      for (let key in allOtherFish) {
+        let fish = allOtherFish[key];
+        if (playerFish.collision(fish)) {
+          console.log("AUCH! collision");
+        }
       }
     }
+    pop();
   }
-  pop();
+
 }
 
 class Fish {
@@ -98,14 +110,16 @@ class Fish {
   }
 
   display() {
-    //draws fish
-    fill(this.color);
-    circle(this.fishX, this.fishY, this.fishSize);
-    this.move();
+    //draws fish if it isn't dead
+    if (!this.isDead){
+      fill(this.color);
+      circle(this.fishX, this.fishY, this.fishSize);
+      this.move();
+    }
   }
 
   move() {
-    if (this.fishX > width -1 || this.fishX < 1) {
+    if (this.fishX > width - 1 || this.fishX < 1) {
       this.speed = this.speed * -1;
     }
     this.fishX = this.fishX + this.speed;
@@ -139,23 +153,23 @@ class PlayerFish {
   }
 
   addPoint(number) {
-    this.playerScore = this.playerScore+number;
+    this.playerScore = this.playerScore + number;
   }
 
   collision(otherFish) {
-    if (!otherFish.isDead){
+    if (!otherFish.isDead) {
       line(otherFish.fishX, otherFish.fishY, this.fishX, this.fishY)
-      let requiredDist = (this.fishSize+otherFish.fishSize)/2;
+      let requiredDist = (this.fishSize + otherFish.fishSize) / 2;
       let distanceToCenter = Math.round(dist(otherFish.fishX, otherFish.fishY, this.fishX, this.fishY));
-      console.log(distanceToCenter);
+      // console.log(distanceToCenter);
       if (distanceToCenter < requiredDist) {
-        if (otherFish.fishSize > this.fishSize){
+        if (otherFish.fishSize > this.fishSize) {
           otherFish.kill();
-          this.fishSize = this.fishSize-10;
+          this.fishSize = this.fishSize - 10;
           this.addPoint(-1);
         } else {
           otherFish.kill();
-          this.fishSize = this.fishSize+10;
+          this.fishSize = this.fishSize + 10;
           this.addPoint(1);
         }
         return true;
