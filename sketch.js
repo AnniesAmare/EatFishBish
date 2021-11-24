@@ -157,7 +157,15 @@ function draw() {
       for (let key in allOtherFish) {
         let fish = allOtherFish[key];
         if (playerFish.collision(fish)) {
-          console.log("AUCH! collision");
+          if (fish.fishSize > playerFish.fishSize) {
+            //game over
+            generalState = 2;
+          } else {
+            //kills fish, makes the player-fish bigger and adds a point
+            fish.kill();
+            playerFish.fishSize = playerFish.fishSize + 10;
+            playerFish.addPoint(1);
+          }
         }
       }
     }
@@ -172,6 +180,7 @@ function draw() {
 
     json.name = userInputName;
     json.score = playerFish.playerScore;
+
     if (!fileIsSaved) {
       //puts the array into the json object
       savedScores.push(json);
@@ -249,20 +258,11 @@ class PlayerFish {
 
   collision(otherFish) {
     if (!otherFish.isDead) {
-      line(otherFish.fishX, otherFish.fishY, this.fishX, this.fishY)
+      //line(otherFish.fishX, otherFish.fishY, this.fishX, this.fishY) //line-object used to test collision
       let requiredDist = (this.fishSize + otherFish.fishSize) / 2;
-      let distanceToCenter = Math.round(dist(otherFish.fishX, otherFish.fishY, this.fishX, this.fishY));
-      // console.log(distanceToCenter);
-      if (distanceToCenter < requiredDist) {
-        if (otherFish.fishSize > this.fishSize) {
-          otherFish.kill();
-          //game over
-          generalState = 2;
-        } else {
-          otherFish.kill();
-          this.fishSize = this.fishSize + 10;
-          this.addPoint(1);
-        }
+      let actualDist = dist(otherFish.fishX, otherFish.fishY, this.fishX, this.fishY);
+      let distanceBetweenFish = Math.round(actualDist);
+      if (distanceBetweenFish < requiredDist) {
         return true;
       } else {
         return false;
