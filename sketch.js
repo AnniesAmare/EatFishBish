@@ -12,6 +12,7 @@ let indexY;
 
 //statemachine
 let generalState = 0;
+let userInputName = null;
 
 //cheks runs when a handpose has loaded
 function modelReady() {
@@ -25,6 +26,7 @@ function gotPose(results) {
   hands = results;
 }
 
+//fetches the coordinates for the fingertip of the index-finger
 function getIndexFingerCords(hand) {
   let indexFinger = hand.annotations.indexFinger;
   return indexFinger[3];
@@ -43,11 +45,32 @@ function createFish(number) {
   return allOtherFish;
 }
 
+//used to create the input box and handle the input
+function createInputBox() {
+  let input;
+  let button;
+  input = createInput();
+  input.position(width / 3, height / 2 - 50);
+  button = createButton("submit");
+  button.position(width / 3 + 180, height / 2 - 50);
+  button.mousePressed(userInputNameHandler => {
+    //handles the input
+    userInputName = input.value();
+    input.remove();
+    button.remove();
+    //sets generalstate to the game.
+    generalState = 1;
+  });
+}
+
+
 function setup() {
   createCanvas(600, 400);
   video = createCapture(VIDEO);
   video.hide();
   handpose = ml5.handpose(video, modelReady);
+
+  createInputBox();
 
   allOtherFish = createFish(numberOfFish);
   playerFish = new PlayerFish();
@@ -58,12 +81,13 @@ function draw() {
     background(43, 190, 236);
     textAlign(CENTER);
     textSize(50);
-    text("Hello!", width / 2, height / 2 - 100);
+    text("Hello!", width/2, height/2 - 100);
     textSize(20);
-    text("Please type your name in the box below:", width / 2, height / 2 - 70);
+    text("Please type your name in the box below:", width/2, height/2 - 70);
   }
 
   if (generalState == 1) {
+    console.log(userInputName);
     push();
     translate(width, 0);
     scale(-1, 1);
@@ -111,7 +135,7 @@ class Fish {
 
   display() {
     //draws fish if it isn't dead
-    if (!this.isDead){
+    if (!this.isDead) {
       fill(this.color);
       circle(this.fishX, this.fishY, this.fishSize);
       this.move();
