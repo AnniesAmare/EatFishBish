@@ -176,7 +176,7 @@ function draw() {
     background(43, 190, 236);
     displayGameOver(playerFish);
 
-    savedScores = scores.highscores;
+    savedScores = scores.allScores;
 
     json.name = userInputName;
     json.score = playerFish.playerScore;
@@ -185,7 +185,7 @@ function draw() {
       //puts the array into the json object
       savedScores.push(json);
       let output = {
-        highscores: savedScores
+        allScores: savedScores
       };
       saveJSON(output, 'scores.json'); 
       fileIsSaved = true;
