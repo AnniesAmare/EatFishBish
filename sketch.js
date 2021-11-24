@@ -42,8 +42,8 @@ function getIndexFingerCords(hand) {
 function createFish(number) {
   let allOtherFish = [];
   for (let fishIndex = 0; fishIndex < number; fishIndex++) {
-    const x = random(0, width) + 5;
-    const y = random(0, height) + 5;
+    const x = random(0, width);
+    const y = random(0, height);
     const size = random(10, 50);
     const otherFish = new Fish(x, y, size);
     allOtherFish[fishIndex] = otherFish;
@@ -218,7 +218,7 @@ class Fish {
   }
 
   move() {
-    if (this.fishX > width - 1 || this.fishX < 1) {
+    if (this.fishX > width || this.fishX < 1) {
       this.speed = this.speed * -1;
     }
     this.fishX = this.fishX + this.speed;
