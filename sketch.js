@@ -198,7 +198,6 @@ function draw() {
       count = count+1;
     }
   }
-
 }
 
 class Fish {
