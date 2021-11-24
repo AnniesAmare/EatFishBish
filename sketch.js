@@ -1,3 +1,9 @@
+// score variables
+let scores;
+let savedScores;
+let fileIsSaved = false;
+let json = {};
+
 // Fish variables
 let playerFish;
 let allOtherFish;
@@ -80,6 +86,17 @@ function displayPlayerScore(playerName, playerFish){
   pop();
 }
 
+function displayGameOver(playerFish){
+  textAlign(CENTER);
+  textSize(50);
+  text("Game over!", width/2, height/2 - 100);
+  textSize(20);
+  text("You finished with a score of: "+playerFish.playerScore, width/2,height/2-70);
+}
+
+function preload() {
+  scores = loadJSON('scores.json');
+}
 
 function setup() {
   createCanvas(600, 400);
@@ -149,6 +166,28 @@ function draw() {
 
   if (generalState == 2) {
     background(43, 190, 236);
+    displayGameOver(playerFish);
+
+    savedScores = scores.highscores;
+
+    json.name = userInputName;
+    json.score = playerFish.playerScore;
+    if (!fileIsSaved) {
+      //puts the array into the json object
+      savedScores.push(json);
+      let output = {
+        highscores: savedScores
+      };
+      saveJSON(output, 'scores.json'); 
+      fileIsSaved = true;
+    }
+
+    count = 1;
+    for (const scoreIndex in savedScores) {
+      const score = savedScores[scoreIndex];
+      text(score.name+" : "+score.score, width/2,(height/2-50)+30*count);
+      count = count+1;
+    }
   }
 
 }
@@ -217,8 +256,8 @@ class PlayerFish {
       if (distanceToCenter < requiredDist) {
         if (otherFish.fishSize > this.fishSize) {
           otherFish.kill();
-          this.fishSize = this.fishSize - 10;
-          this.addPoint(-1);
+          //game over
+          generalState = 2;
         } else {
           otherFish.kill();
           this.fishSize = this.fishSize + 10;
