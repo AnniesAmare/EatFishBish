@@ -84,9 +84,6 @@ function draw() {
       }
     }
   }
-
-
-
   pop();
 }
 
@@ -147,8 +144,9 @@ class PlayerFish {
 
   collision(otherFish) {
     if (!otherFish.isDead){
-      let requiredDist = 100;
-      let distanceToCenter = Math.round(dist(otherFish.fishX, otherFish.fishY, this.fishX, this.fishX));
+      line(otherFish.fishX, otherFish.fishY, this.fishX, this.fishY)
+      let requiredDist = (this.fishSize+otherFish.fishSize)/2;
+      let distanceToCenter = Math.round(dist(otherFish.fishX, otherFish.fishY, this.fishX, this.fishY));
       console.log(distanceToCenter);
       if (distanceToCenter < requiredDist) {
         if (otherFish.fishSize > this.fishSize){
