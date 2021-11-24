@@ -63,6 +63,23 @@ function createInputBox() {
   });
 }
 
+function displayPlayerScore(playerName, playerFish){
+  //mirrors the text, because our game is mirrored
+  push();
+  translate(width, 0);
+  scale(-1, 1);
+  //sets the x and y position for the text
+  const playerTextX = 50;
+  const playerTextY = 50;
+  //sets the text alignment, size and content
+  textAlign(LEFT);
+  textSize(15);
+  text("Player: " + playerName, playerTextX, playerTextY);
+  text("Score: " + playerFish.playerScore, playerTextX, playerTextY + 20);
+  //stops the mirroring
+  pop();
+}
+
 
 function setup() {
   createCanvas(600, 400);
@@ -87,7 +104,6 @@ function draw() {
   }
 
   if (generalState == 1) {
-    console.log(userInputName);
     push();
     translate(width, 0);
     scale(-1, 1);
@@ -96,10 +112,20 @@ function draw() {
       tint(255, 127);
       image(video, 0, 0);
     }
+    displayPlayerScore(userInputName,playerFish);
 
+    //display fishes
+    let deathCount = 0;
     for (let key in allOtherFish) {
       let fish = allOtherFish[key];
-      fish.display();
+      if (!fish.isDead) {
+        fish.display();
+      } else {
+        deathCount = deathCount+1;
+        if(deathCount == numberOfFish){
+          generalState = 2;
+        }
+      }
     }
 
     if (hands && hands.length > 0) {
@@ -121,6 +147,10 @@ function draw() {
     pop();
   }
 
+  if (generalState == 2) {
+    background(43, 190, 236);
+  }
+
 }
 
 class Fish {
@@ -134,12 +164,10 @@ class Fish {
   }
 
   display() {
-    //draws fish if it isn't dead
-    if (!this.isDead) {
-      fill(this.color);
-      circle(this.fishX, this.fishY, this.fishSize);
-      this.move();
-    }
+    //draws fish
+    fill(this.color);
+    circle(this.fishX, this.fishY, this.fishSize);
+    this.move();
   }
 
   move() {
