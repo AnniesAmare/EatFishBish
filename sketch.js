@@ -9,14 +9,14 @@ let playerFish;
 let allOtherFish;
 let numberOfFish = 5;
 
-//handstuff
+//handmodel variables
 let video;
 let handpose;
 let hands;
 let indexX;
 let indexY;
 
-//statemachine
+//statemachine variables
 let generalState = 0;
 let userInputName = null;
 

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="708087fd-b7a9-4b0e-bcbc-5c970fd2901f" name="Changes" comment="">
+    <list default="true" id="708087fd-b7a9-4b0e-bcbc-5c970fd2901f" name="Changes" comment="re-named &quot;highscores&quot; to allScores">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scores.json" beforeDir="false" afterPath="$PROJECT_DIR$/scores.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sketch.js" beforeDir="false" afterPath="$PROJECT_DIR$/sketch.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,8 +38,17 @@
       <workItem from="1637750566718" duration="441000" />
       <workItem from="1637760285627" duration="235000" />
       <workItem from="1637760831088" duration="5343000" />
-      <workItem from="1637791101335" duration="165000" />
+      <workItem from="1637791101335" duration="216000" />
+      <workItem from="1637842675183" duration="29000" />
     </task>
+    <task id="LOCAL-00001" summary="re-named &quot;highscores&quot; to allScores">
+      <created>1637791304972</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1637791304972</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -57,5 +65,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="re-named &quot;highscores&quot; to allScores" />
+    <option name="LAST_COMMIT_MESSAGE" value="re-named &quot;highscores&quot; to allScores" />
   </component>
 </project>
